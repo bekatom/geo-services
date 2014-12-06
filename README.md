@@ -11,8 +11,10 @@ pip install suds
 
 გამოყენება django-ს მაგალითზე 
 ```python
+from django.shortcuts import
 from geo_services.rs import RS
 from ge_services.nbg import NBG
+import json
 
 def get_company_info(request):
     rs = RS(request.GET['identification']) # კომპანიის იდენტიფიკატორი
