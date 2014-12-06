@@ -11,7 +11,7 @@ pip install suds
 
 გამოყენება django-ს მაგალითზე 
 ```python
-from django.shortcuts import
+from django.shortcuts import HttpResponse
 from geo_services.rs import RS
 from ge_services.nbg import NBG
 import json
