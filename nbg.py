@@ -1,38 +1,40 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Beka Tomashvili'
 from suds.client import Client
-
+## See service documentation here
+# https://services.nbg.gov.ge/
 
 class NBG:
     def __init__(self, curr):
-        self.client = Client("http://nbg.gov.ge/currency.wsdl")
+        self.client = Client("https://services.nbg.gov.ge/Rates/Service.asmx?wsdl")
         self.curr = curr
+        self.data = self.client.service.GetCurrentRates(curr).CurrencyRate[0]
 
     def get_currency_description(self):
-        return self.client.service.GetCurrencyDescription(self.curr)
+        return self.data.Name
 
     def get_currency(self):
-        return self.client.service.GetCurrency(self.curr)
+        return self.data.Code
 
     def get_currency_rate(self):
-        return self.client.service.GetCurrencyRate(self.curr)
+        return self.data.Rate
 
     def get_curr_change(self):
-        return self.client.service.GetCurrencyChange(self.curr)
+        return self.data.Diff
 
     def get_date(self):
-        return self.client.service.GetDate()
+        return str(self.data.Date)
+
+    def get_valid_date(self):
+        return str(self.data.Date)
 
     def get_currency_nbg(self):
         return {
-            "abr": self.curr,  # კურსის აბრევიატურა , USD , RUB და ა.შ
-            "currency": self.get_currency(),  # აბრუნებს ვალუტის კურსს, მაგ. "1.0754"
-            "description": self.get_currency_description(),  # აბრუნებს ვალუტის აღწერას, მაგ. "10 ესტორნური კრონი"
-            "change": self.get_curr_change(),  # აბრუნებს ვალუტის ცვლილების მნიშვნელობას, მაგ. "-0.0121"
-            "rate": self.get_currency_rate(),  # 1 - თუ გაიზარდა; -1 - თუ დაიკლო, 0 - თუ იგივე დარჩა
-            "date": self.get_date()  # აბრუნებს კურსების შესაბამის თარიღს
+            "abr": self.data.Code,  # კურსის აბრევიატურა , USD , RUB და ა.შ
+            "currency": self.data.Rate,  # აბრუნებს ვალუტის კურსს, მაგ. "1.0754"
+            "description": self.data.Name,  # აბრუნებს ვალუტის აღწერას, მაგ. "10 ესტორნური კრონი"
+            "quantity": self.data.Quantity,  # აბრუნებს ვალუტის აღწერას, მაგ. "10 ესტორნური კრონი"
+            "change": self.data.Diff,  # აბრუნებს ვალუტის ცვლილების მნიშვნელობას, მაგ. "-0.0121"
+            "valid_from_date" : str(self.data.ValidFromDate),
+            "date":  str(self.data.Date)  # აბრუნებს კურსების შესაბამის თარიღს
         }
-
-
-
-
