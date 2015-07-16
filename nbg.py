@@ -26,7 +26,7 @@ class NBG:
         return str(self.data.Date)
 
     def get_valid_date(self):
-        return str(self.data.Date)
+        return str(self.data.ValidFromDate)
 
     def get_currency_nbg(self):
         return {
